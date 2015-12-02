@@ -32,10 +32,8 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         if let _ = NSUserDefaults.standardUserDefaults().objectForKey("userID") {
             if (xmpp.connect()) {
                 print("connected...")
-
             }
-            
-        } else { // not login yet
+        }else{ // not login yet
             
         }
     }

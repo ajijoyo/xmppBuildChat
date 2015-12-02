@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class chatViewController: UIViewController ,xmppMessageDelegate ,UITableViewDelegate,UITableViewDataSource{
+class chatViewController: UIViewController ,xmppMessageDelegate ,UITableViewDelegate,UITableViewDataSource , UITextFieldDelegate{
     @IBOutlet weak var msgTextField : UITextField!
     @IBOutlet weak var myTable : UITableView!
     
@@ -27,9 +27,25 @@ class chatViewController: UIViewController ,xmppMessageDelegate ,UITableViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        msgTextField.delegate = self
+        
         xmpp.messageDelegate = self
         Log.D(toChatName)
-        myTable.rowHeight = 60;
+        myTable.estimatedRowHeight = 20
+        myTable.rowHeight = UITableViewAutomaticDimension;
+        
+        let hidekeyTap = UITapGestureRecognizer(target: self, action: "hidekey")
+        myTable.addGestureRecognizer(hidekeyTap)
+    }
+    
+    func hidekey(){
+        msgTextField.resignFirstResponder()
+    }
+    
+    //MARK: - uitextfield delegate
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     //MARK: uitableview
@@ -45,6 +61,7 @@ class chatViewController: UIViewController ,xmppMessageDelegate ,UITableViewDele
         let cell = tableView.dequeueReusableCellWithIdentifier("cell") as UITableViewCell!
         
         cell.textLabel?.frame = cell.contentView.bounds
+        cell.textLabel?.numberOfLines = 0
         
         if let dic = chatM[indexPath.row] as? [String : String] {
             cell.textLabel?.text = dic["msg"]
@@ -84,5 +101,14 @@ class chatViewController: UIViewController ,xmppMessageDelegate ,UITableViewDele
     
     func MESSAGEnewMessageReceive(message: AnyObject) {
         chatM.append(message)
+    }
+    //MARK: - memory managment
+    deinit{
+        chatM.removeAll()
+        toChatName = ""
+    }
+    
+    override func didReceiveMemoryWarning() {
+        
     }
 }
