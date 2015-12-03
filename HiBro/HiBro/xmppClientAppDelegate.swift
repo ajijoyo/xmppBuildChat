@@ -136,9 +136,9 @@ class xmppClientAppDelegate: NSObject , XMPPStreamDelegate {
         
         if !(presenceFromUser == myUsername) {
             if presenceType == "available" {
-                chatDelegate?.CHATnewBuddyOnline(presence.from().user)
+                chatDelegate?.CHATnewBuddyOnline(presence.fromStr())
             }else if presenceType == "unavailable"{
-                chatDelegate?.CHATnewBuddyOffline(presence.from().user)
+                chatDelegate?.CHATnewBuddyOffline(presence.fromStr())
             }else if presenceType == "subscribe" {
                 chatDelegate?.CHATnewBuddyRequest(presence.from())
             }

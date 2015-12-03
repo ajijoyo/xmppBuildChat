@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource ,xmppChatDelegate{
+class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource ,xmppChatDelegate,xmppMessageDelegate{
     
     let xmpp = xmppClientAppDelegate.sharedInstance
     
@@ -23,6 +23,9 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         myTable.autoresizingMask = [.FlexibleHeight , .FlexibleWidth]
         
         xmpp.chatDelegate = self
+        if (NSUserDefaults.standardUserDefaults().boolForKey("autoreply")){
+            xmpp.messageDelegate = self
+        }
         
     }
     
@@ -85,6 +88,20 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     func CHATnewBuddyOnline(name: String) {
         onlineBuddies.append(name)
         myTable.reloadData()
+    }
+    
+    func MESSAGEnewMessageReceive(message: AnyObject) {
+        if let dic = message as? [String : String] {
+            let body = DDXMLElement(name: "body")
+            body.setStringValue("auto Bot")
+            
+            let message = DDXMLElement(name: "message")
+            message.addAttributeWithName("type", stringValue: "chat")
+            message.addAttributeWithName("to", stringValue: dic["sender"])
+            message.addChild(body)
+            
+            xmpp.xmppStream?.sendElement(message)
+        }
     }
 
     override func didReceiveMemoryWarning() {

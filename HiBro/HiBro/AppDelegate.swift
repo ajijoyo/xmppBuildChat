@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         NSUserDefaults.standardUserDefaults().setObject("ios@localhost", forKey: "userID")
         NSUserDefaults.standardUserDefaults().setObject("1234", forKey: "userPassword")
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "autoreply")
         
         return true
     }
