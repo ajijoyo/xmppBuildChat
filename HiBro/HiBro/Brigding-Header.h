@@ -11,4 +11,9 @@
 
 #import "XMPPFramework.h"
 
+#import "XMPPUserCoreDataStorageObject.h"
+#import "XMPPRosterMemoryStorage.h"
+#import "XMPPRoster.h"
+#import <CommonCrypto/CommonCrypto.h>
+
 #endif /* Brigding_Header_h */

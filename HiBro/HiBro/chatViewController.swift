@@ -24,13 +24,19 @@ class chatViewController: UIViewController ,xmppMessageDelegate ,UITableViewDele
     }
     
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationItem.title = toChatName
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        xmpp.registration()
         
         msgTextField.delegate = self
         
         xmpp.messageDelegate = self
-        Log.D(toChatName)
+        
         myTable.estimatedRowHeight = 20
         myTable.rowHeight = UITableViewAutomaticDimension;
         

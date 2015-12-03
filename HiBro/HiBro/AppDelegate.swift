@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        NSUserDefaults.standardUserDefaults().setObject("coba2@localhost", forKey: "userID")
+        NSUserDefaults.standardUserDefaults().setObject("ios@localhost", forKey: "userID")
         NSUserDefaults.standardUserDefaults().setObject("1234", forKey: "userPassword")
         
         return true

@@ -13,6 +13,11 @@ protocol xmppChatDelegate : class{
     /** call when budy get offline
      */
     func CHATnewBuddyOffline(name : String)
+    
+    /** call when some buddy add you
+     */
+    func CHATnewBuddyRequest(JID : XMPPJID)
+    
     func CHATdidDisconnect()
 }
 
@@ -24,7 +29,7 @@ protocol xmppMessageDelegate : class{
 
 import UIKit
 
-class xmppClientAppDelegate: NSObject , XMPPStreamDelegate{
+class xmppClientAppDelegate: NSObject , XMPPStreamDelegate {
 
     static let sharedInstance = xmppClientAppDelegate()
     
@@ -32,6 +37,7 @@ class xmppClientAppDelegate: NSObject , XMPPStreamDelegate{
     weak var messageDelegate : xmppMessageDelegate? = nil
     
     internal var xmppStream : XMPPStream? = nil
+    internal var roster : XMPPRoster?
     internal var password = ""
     
     var isOpen = false;
@@ -39,7 +45,12 @@ class xmppClientAppDelegate: NSObject , XMPPStreamDelegate{
     private func SetupStream(){
         xmppStream = XMPPStream()
         xmppStream?.addDelegate(self, delegateQueue: dispatch_get_main_queue())
-        
+        roster = XMPPRoster(rosterStorage: XMPPRosterMemoryStorage())
+        roster?.activate(xmppStream)
+        if !roster!.autoFetchRoster {
+            roster?.fetchRoster()
+        }
+
     }
     
     private func goOnline(){
@@ -108,13 +119,13 @@ class xmppClientAppDelegate: NSObject , XMPPStreamDelegate{
     }
     
     func xmppStream(sender: XMPPStream!, didReceiveMessage message: XMPPMessage!) {
-
-        let msg = message.elementForName("body").stringValue()
+        Log.D(message)
         let from = message.attributeForName("from").stringValue()
+        if let msg = message.elementForName("body")?.stringValue()  {
+            let m = ["msg":msg,"sender":from]
+             messageDelegate?.MESSAGEnewMessageReceive(m)
+        }
         
-        let m = ["msg":msg,"sender":from]
-        
-        messageDelegate?.MESSAGEnewMessageReceive(m)
     }
     
     func xmppStream(sender: XMPPStream!, didReceivePresence presence: XMPPPresence!) {
@@ -124,12 +135,62 @@ class xmppClientAppDelegate: NSObject , XMPPStreamDelegate{
         let presenceFromUser = presence.from().user
         
         if !(presenceFromUser == myUsername) {
-            if presenceType != "unavailable" {
-                chatDelegate?.CHATnewBuddyOnline(presence.fromStr())
+            if presenceType == "available" {
+                chatDelegate?.CHATnewBuddyOnline(presence.from().user)
             }else if presenceType == "unavailable"{
-                chatDelegate?.CHATnewBuddyOffline(presence.fromStr())
+                chatDelegate?.CHATnewBuddyOffline(presence.from().user)
+            }else if presenceType == "subscribe" {
+                chatDelegate?.CHATnewBuddyRequest(presence.from())
             }
         }
+        
+        Log.D("\(presence.from()) \(presence.type())")
     }
+    
+    func xmppStream(sender: XMPPStream!, didReceiveIQ iq: XMPPIQ!) -> Bool {
+        let queryElement = iq.elementForName("query", xmlns: "jabber:iq:roster")
+        if queryElement != nil {
+            let itemElements = queryElement.elementsForName("item")
+            for atri in itemElements {
+//                chatDelegate?.CHATnewBuddyOnline(((atri as? DDXMLElement)?.attributeForName("jid").stringValue())!)
+            }
+        }
+        return true
+    }
+    
+    func registration(){
+        xmppStream?.myJID = XMPPJID.jidWithString("coba4@localhost")
+        
+        Log.D(xmppStream?.myJID.bare())
+        
+        if (xmppStream!.supportsInBandRegistration()) {
+            do{
+                _ = try xmppStream?.registerWithPassword("1234")
+            }catch let error as NSError {
+                Log.D(error)
+            }
+        }
+        
+    }
+    
+    func fetchFriends(){
+        let query = DDXMLElement(name: "<query xmlns='jabber:iq:roster'/>")
+        let iq = DDXMLElement.elementWithName("iq") as! DDXMLElement
+        
+        iq.addAttributeWithName("type", stringValue: "get")
+        iq.addAttributeWithName("id", stringValue: "ANY_ID_NAME")
+        iq.addAttributeWithName("from", stringValue: "ANY_ID_NAME@localhost")
+        iq.addChild(query)
+        xmppStream?.sendElement(iq)
+    }
+    
+    func xmppStreamDidRegister(sender: XMPPStream!) {
+        
+    }
+    
+    func xmppStream(sender: XMPPStream!, didNotRegister error: DDXMLElement!) {
+        
+    }
+
     
 }

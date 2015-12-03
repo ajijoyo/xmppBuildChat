@@ -163,6 +163,7 @@
 		D316A4C91C0D87BC001CDEF3 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D316A4C81C0D87BC001CDEF3 /* libresolv.tbd */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D316A4CC1C0D8899001CDEF3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D316A4CB1C0D8899001CDEF3 /* UIKit.framework */; };
 		D316A4D01C0D9362001CDEF3 /* xmppClientAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D316A4CF1C0D9362001CDEF3 /* xmppClientAppDelegate.swift */; };
+		D31A47B21C0FE94900FB3A43 /* extensionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31A47B11C0FE94900FB3A43 /* extensionKit.swift */; };
 		D33331461C0D9CE000DFEE9A /* Methods.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33331451C0D9CE000DFEE9A /* Methods.swift */; };
 /* End PBXBuildFile section */
 
@@ -493,6 +494,7 @@
 		D316A4CB1C0D8899001CDEF3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D316A4CD1C0D8F9D001CDEF3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D316A4CF1C0D9362001CDEF3 /* xmppClientAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = xmppClientAppDelegate.swift; sourceTree = "<group>"; };
+		D31A47B11C0FE94900FB3A43 /* extensionKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = extensionKit.swift; sourceTree = "<group>"; };
 		D33331451C0D9CE000DFEE9A /* Methods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Methods.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -534,6 +536,7 @@
 			children = (
 				D316A4CF1C0D9362001CDEF3 /* xmppClientAppDelegate.swift */,
 				D33331451C0D9CE000DFEE9A /* Methods.swift */,
+				D31A47B11C0FE94900FB3A43 /* extensionKit.swift */,
 			);
 			name = services;
 			sourceTree = "<group>";
@@ -1635,6 +1638,7 @@
 				D316A49B1C0D865F001CDEF3 /* XMPPPing.m in Sources */,
 				D316A29D1C0D85F0001CDEF3 /* ViewController.swift in Sources */,
 				D316A4581C0D865F001CDEF3 /* XMPPIQ+JabberRPCResonse.m in Sources */,
+				D31A47B21C0FE94900FB3A43 /* extensionKit.swift in Sources */,
 				D316A48A1C0D865F001CDEF3 /* XMPPCapabilities.m in Sources */,
 				D316A4781C0D865F001CDEF3 /* NSXMLElement+XEP_0059.m in Sources */,
 				D316A4A91C0D865F001CDEF3 /* DDList.m in Sources */,

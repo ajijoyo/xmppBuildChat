@@ -65,6 +65,19 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     func CHATdidDisconnect() {
         
     }
+    func CHATnewBuddyRequest(JID: XMPPJID) {
+        
+        let alert = UIAlertController(title: "approve pls", message: JID.user, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let addback = UIAlertAction(title: "i'll add you back", style: UIAlertActionStyle.Default, handler: {[unowned self](ac)in
+            self.xmpp.roster?.acceptPresenceSubscriptionRequestFrom(JID, andAddToRoster: true)
+        })
+        let reject = UIAlertAction(title: "who the fucking are you?", style: UIAlertActionStyle.Cancel, handler: {[unowned self](ac)in
+            self.xmpp.roster?.rejectPresenceSubscriptionRequestFrom(JID)
+        })
+        alert.addAction(reject)
+        alert.addAction(addback)
+        self.presentViewController(alert, animated: false, completion: nil)
+    }
     func CHATnewBuddyOffline(name: String) {
         onlineBuddies.removeObject(name)
         myTable.reloadData()
